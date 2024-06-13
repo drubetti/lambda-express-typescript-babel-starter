@@ -1,0 +1,18 @@
+{
+  "extends": "@tsconfig/node20",
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "isolatedModules": true,
+    "outDir": "./dist",
+    "paths": {
+      "@constants/*": ["constants/*"],
+      "@handlers/*": ["handlers/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@models/*": ["models/*"],
+      "@routes/*": ["routes/*"],
+      "@schemas/*": ["schemas/*"]
+    },
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*"]
+}

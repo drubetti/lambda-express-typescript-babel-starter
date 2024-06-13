@@ -1,0 +1,63 @@
+service: lambda-express-typescript-babel-starter
+frameworkVersion: '3' # version 4 requires a real AWS account even for running offline
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+
+package:
+  excludeDevDependencies: false # disabled and replaced by "serverless-plugin-include-dependencies"
+  individually: true
+  # Directories and files to include in the deployed package
+  patterns:
+    - '!*.json'
+    - '!.*'
+    - '!.*/**'
+    - '!src/**'
+    - 'dist/**'
+    - '.env.*'
+
+custom:
+  cors:
+    origins: ['*']
+    headers:
+      [
+        'Authorization',
+        'Content-Type',
+        'Session-Id',
+        'X-Amz-Date',
+        'X-Amz-Security-Token',
+        'X-Api-Key',
+      ]
+
+functions:
+  expressApp:
+    handler: dist/handlers/expressApp.default
+    events:
+      - http:
+          path: /app
+          method: get
+          cors: ${self:custom.cors}
+      - http:
+          path: /app
+          method: post
+          cors: ${self:custom.cors}
+      - http:
+          path: /app/{proxy+}
+          method: get
+          cors: ${self:custom.cors}
+      - http:
+          path: /app/{proxy+}
+          method: put
+          cors: ${self:custom.cors}
+      - http:
+          path: /app/{proxy+}
+          method: delete
+          cors: ${self:custom.cors}
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-offline
+  - serverless-plugin-common-excludes # must be before "serverless-plugin-include-dependencies"
+  - serverless-plugin-include-dependencies
