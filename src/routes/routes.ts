@@ -10,26 +10,22 @@ import {
 
 const router = Router();
 
-export const BASE_URL = '/app';
+export const BASE_PATH = '/app';
+export const PROXY_PATH = '/:id';
 
-router.get(BASE_URL, celebrate(requestQuerySchema), success);
+router.get(BASE_PATH, celebrate(requestQuerySchema), success);
 
-router.get(
-	`${BASE_URL}/:id`,
-	celebrate(requestParamsSchema),
-	echoParams,
-	success,
-);
+router.get(PROXY_PATH, celebrate(requestParamsSchema), echoParams, success);
 
-router.post(BASE_URL, celebrate(requestBodySchema), echoBody, success);
+router.post(BASE_PATH, celebrate(requestBodySchema), echoBody, success);
 
 router.put(
-	`${BASE_URL}/:id`,
+	PROXY_PATH,
 	celebrate({ ...requestBodySchema, ...requestParamsSchema }),
 	echoBody,
 	success,
 );
 
-router.delete(`${BASE_URL}/:id`, celebrate(requestParamsSchema), success);
+router.delete(PROXY_PATH, celebrate(requestParamsSchema), success);
 
 export default router;
